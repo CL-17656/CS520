@@ -33,7 +33,7 @@ public class QuestionController {
      * @return {@link Result <Integer>}
      */
     @OptLog(optType = SAVE_OR_UPDATE)
-    @ApiOperation(value = "添加或修改题目")
+    @ApiOperation(value = "add/update question")
     @PostMapping("/admin/questions")
     public Result<Integer> saveOrUpdateQuestion(@Valid @RequestBody QuestionVO questionVO) {
         return Result.ok(questionService.saveOrUpdateQuestion(questionVO));

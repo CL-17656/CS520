@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * @author Xinyuan Xu
  */
-@Api(tags = "用户账号模块")
+@Api(tags = "User account")
 @RestController
 public class UserAuthController {
     @Autowired
