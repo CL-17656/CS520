@@ -79,9 +79,13 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthDao, UserAuth> impl
                 .build();
         userInfoDao.insert(userInfo);
         // Bind user role
+        int roleId = RoleEnum.STU.getRoleId();
+        if (user.getRole().equals("instructor")) {
+            roleId = RoleEnum.PROF.getRoleId();
+        }
         UserRole userRole = UserRole.builder()
                 .userId(userInfo.getId())
-                .roleId(RoleEnum.STU.getRoleId())
+                .roleId(roleId)
                 .build();
         userRoleDao.insert(userRole);
         // Add user account
