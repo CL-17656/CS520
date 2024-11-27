@@ -26,6 +26,11 @@ public class Project {
     private String name;
 
     /**
+     * author id
+     */
+    private Integer userId;
+
+    /**
      * question id list
      */
     private String questions;

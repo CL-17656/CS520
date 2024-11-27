@@ -67,6 +67,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         if (Objects.nonNull(projectVO.getPassword())) {
             project.setPassword(BCrypt.hashpw(project.getPassword(), BCrypt.gensalt()));
         }
+        project.setUserId(UserUtils.getLoginUser().getUserInfoId());
         // Random problem handling
         if (project.getIsRandom()) {
             List<Integer> idList = new ArrayList<>();
@@ -115,6 +116,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         int count = Math.toIntExact(projectDao.selectCount(new LambdaQueryWrapper<Project>()
                 .like(StringUtils.isNotBlank(condition.getKeywords()), Project::getName, condition.getKeywords())
                 .eq(Project::getIsDelete, CommonConst.FALSE)
+                .eq(Project::getUserId, condition.getUserInfoId())
                 .eq(Objects.nonNull(condition.getStatus()), Project::getStatus, condition.getStatus())));
         if (count == 0) {
             return new PageResult<>();

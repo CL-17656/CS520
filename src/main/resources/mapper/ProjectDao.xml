@@ -9,6 +9,7 @@
         SELECT
         id,
         name,
+        user_id,
         description,
         cover,
         questions,
@@ -40,6 +41,9 @@
             </if>
             <if test="condition.status != null">
                 and status = #{condition.status}
+            </if>
+            <if test="condition.userInfoId != null">
+                and user_id = #{condition.userInfoId}
             </if>
         </where>
         ORDER BY

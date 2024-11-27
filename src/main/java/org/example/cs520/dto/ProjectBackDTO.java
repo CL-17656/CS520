@@ -27,6 +27,8 @@ public class ProjectBackDTO {
      */
     private String name;
 
+    private Integer userId;
+
     /**
      * description
      */
