@@ -29,16 +29,16 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException {
-        // 返回登录信息
+        // return login info
         UserInfoDTO userLoginDTO = BeanCopyUtils.copyObject(UserUtils.getLoginUser(), UserInfoDTO.class);
         httpServletResponse.setContentType(CommonConst.APPLICATION_JSON);
         httpServletResponse.getWriter().write(JSON.toJSONString(Result.ok(userLoginDTO)));
-        // 更新用户ip，最近登录时间
+        // update user ip，last login time
         updateUserInfo();
     }
 
     /**
-     * 更新用户信息
+     * update user info
      */
     @Async
     public void updateUserInfo() {
