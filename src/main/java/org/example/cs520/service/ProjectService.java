@@ -1,10 +1,7 @@
 package org.example.cs520.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.example.cs520.dto.ProjectBackDTO;
-import org.example.cs520.dto.ProjectDTO;
-import org.example.cs520.dto.QuestionBackAnalysisDTO;
-import org.example.cs520.dto.QuestionPostDTO;
+import org.example.cs520.dto.*;
 import org.example.cs520.entity.Project;
 import org.example.cs520.vo.PageResult;
 import org.example.cs520.vo.*;
@@ -66,5 +63,13 @@ public interface ProjectService extends IService<Project> {
      * @return {@link QuestionBackAnalysisDTO} project info
      */
     List<QuestionBackAnalysisDTO> getProjectBackAnalysisById(Integer projectId);
+
+    /**
+     * get backend posts
+     *
+     * @param conditionVO condition
+     * @return {@link Result<PostBackDTO>} backend post list
+     */
+    PageResult<PostBackDTO> listPostBacks(ConditionVO conditionVO);
 }
 

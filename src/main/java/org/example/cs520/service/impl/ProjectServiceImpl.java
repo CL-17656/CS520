@@ -348,6 +348,24 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         return analysisDTOS;
     }
 
+    @Override
+    public PageResult<PostBackDTO> listPostBacks(ConditionVO condition) {
+        // Query the total number of posts
+        int count = Math.toIntExact(postDao.selectCount(new LambdaQueryWrapper<Post>().
+                eq(Post::getUserId, condition.getUserInfoId())
+                .eq(Post::getProjectId, condition.getProjectId())
+                .eq(Post::getIsDelete, 0)));
+        if (count == 0) {
+            return new PageResult<>();
+        }
+        // Query background posts
+        List<PostBackDTO> postBackDTOList = BeanCopyUtils.copyList(postDao.selectList(
+                new LambdaQueryWrapper<Post>().eq(Post::getUserId, condition.getUserInfoId())
+                        .eq(Post::getProjectId, condition.getProjectId())
+                        .eq(Post::getIsDelete, 0)), PostBackDTO.class);
+        return new PageResult<>(postBackDTOList, count);
+    }
+
     public List<QuestionPostDTO> getQuestionPostDTOS(Post post) {
         // Get answers to every question
         List<QuestionPostDTO> questionPostDTOS = new ArrayList<>();

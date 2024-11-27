@@ -4,10 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.example.cs520.annotation.OptLog;
-import org.example.cs520.dto.ProjectBackDTO;
-import org.example.cs520.dto.ProjectDTO;
-import org.example.cs520.dto.QuestionBackAnalysisDTO;
-import org.example.cs520.dto.QuestionPostDTO;
+import org.example.cs520.dto.*;
 import org.example.cs520.service.ProjectService;
 import org.example.cs520.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +88,18 @@ public class ProjectController {
     @PostMapping("/projects/post")
     public Result<?> saveOrUpdateProjectPost(@Valid @RequestBody PostVO postVO) {
         return Result.ok(projectService.saveOrUpdateProjectPost(postVO));
+    }
+
+    /**
+     * get backend posts by userId and projectId
+     *
+     * @param conditionVO condition
+     * @return {@link Result<PostBackDTO>} backend post list
+     */
+    @ApiOperation(value = "get backend posts by userId and projectId")
+    @GetMapping("/admin/posts")
+    public Result<PageResult<PostBackDTO>> listPostBacks(ConditionVO conditionVO) {
+        return Result.ok(projectService.listPostBacks(conditionVO));
     }
 
     /**
