@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/CS520_project?serverTimezone=America/New_York&allowMultiQueries=true
     username: root
-    password: 12341234
+    password: peter2001li
     hikari:
       minimum-idle: 5
       # 空闲连接存活最大时间，默认600000（10分钟）

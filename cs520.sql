@@ -18,7 +18,7 @@
 --
 -- Table structure for table `tb_answer`
 --
-
+use CS520_project;
 DROP TABLE IF EXISTS `tb_answer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
