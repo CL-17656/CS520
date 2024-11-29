@@ -30,4 +30,10 @@ public class PostVO {
 
     @ApiModelProperty(name = "isDelete", value = "is delete", dataType = "Boolean")
     private Boolean isDelete;
+
+    @ApiModelProperty(name = "hasGraded", value = "has been Graded", dataType = "Integer")
+    private Integer hasGraded;
+
+    @ApiModelProperty(name = "scores", value = "scores", dataType = "String")
+    private String scores;
 }

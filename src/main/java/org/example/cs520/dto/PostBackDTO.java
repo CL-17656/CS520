@@ -32,6 +32,10 @@ public class PostBackDTO {
 
     private String answer;
 
+    private Integer hasGraded;
+
+    private String scores;
+
     private Integer isDelete;
 
     private LocalDateTime createTime;

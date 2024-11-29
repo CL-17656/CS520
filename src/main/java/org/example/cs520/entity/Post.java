@@ -29,6 +29,10 @@ public class Post {
 
     private String answer;
 
+    private Integer hasGraded;
+
+    private String scores;
+
     private Integer isDelete;
 
     @TableField(fill = FieldFill.INSERT)
