@@ -353,18 +353,26 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
     @Override
     public PageResult<PostBackDTO> listPostBacks(ConditionVO condition) {
         // Query the total number of posts
-        int count = Math.toIntExact(postDao.selectCount(new LambdaQueryWrapper<Post>().
-                eq(Post::getUserId, condition.getUserInfoId())
-                .eq(Post::getProjectId, condition.getProjectId())
-                .eq(Post::getIsDelete, 0)));
+        LambdaQueryWrapper<Post> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if (Objects.nonNull(condition.getProjectId())) {
+            lambdaQueryWrapper.eq(Post::getProjectId, condition.getProjectId());
+        }
+        if (Objects.nonNull(condition.getUserInfoId())) {
+            lambdaQueryWrapper.eq(Post::getUserId, condition.getUserInfoId());
+        }
+        int count = Math.toIntExact(postDao.selectCount(lambdaQueryWrapper.eq(Post::getIsDelete, 0)));
         if (count == 0) {
             return new PageResult<>();
         }
         // Query background posts
         List<PostBackDTO> postBackDTOList = BeanCopyUtils.copyList(postDao.selectList(
-                new LambdaQueryWrapper<Post>().eq(Post::getUserId, condition.getUserInfoId())
-                        .eq(Post::getProjectId, condition.getProjectId())
-                        .eq(Post::getIsDelete, 0)), PostBackDTO.class);
+                lambdaQueryWrapper.eq(Post::getIsDelete, 0)), PostBackDTO.class);
+        postBackDTOList.forEach(postBackDTO -> {
+            postBackDTO.setInstructorId(
+                    projectDao.selectById(postBackDTO.getProjectId()).getUserId());
+            postBackDTO.setProjectName(
+                    projectDao.selectById(postBackDTO.getProjectId()).getName());
+        });
         return new PageResult<>(postBackDTOList, count);
     }
 

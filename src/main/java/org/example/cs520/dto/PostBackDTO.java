@@ -32,6 +32,10 @@ public class PostBackDTO {
 
     private String answer;
 
+    private Integer instructorId;
+
+    private String projectName;
+
     private Integer hasGraded;
 
     private String scores;
