@@ -33,8 +33,11 @@ public class ConditionVO {
     @ApiModelProperty(name = "keywords", value = "searchContent", dataType = "String")
     private String keywords;
 
-    @ApiModelProperty(name = "userId", value = "userId", dataType = "Integer")
+    @ApiModelProperty(name = "userInfoId", value = "userInfoId", dataType = "Integer")
     private Integer userInfoId;
+
+    @ApiModelProperty(name = "projectId", value = "projectId", dataType = "Integer")
+    private Integer projectId;
 
     @ApiModelProperty(name = "type", value = "loginType", dataType = "Integer")
     private Integer loginType;

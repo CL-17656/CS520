@@ -11,9 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface UserInfoService extends IService<UserInfo> {
     /**
-     * 修改用户资料
+     * change user info
      *
-     * @param userInfoVO 用户资料
+     * @param userInfoVO userinfo
      */
     void updateUserInfo(UserInfoVO userInfoVO);
 
@@ -42,7 +42,7 @@ public interface UserInfoService extends IService<UserInfo> {
     /**
      * remove online user
      *
-     * @param userInfoId 用户信息id
+     * @param userInfoId user info id
      */
     void removeOnlineUser(Integer userInfoId);
 }

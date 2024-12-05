@@ -67,6 +67,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         if (Objects.nonNull(projectVO.getPassword())) {
             project.setPassword(BCrypt.hashpw(project.getPassword(), BCrypt.gensalt()));
         }
+        project.setUserId(UserUtils.getLoginUser().getUserInfoId());
         // Random problem handling
         if (project.getIsRandom()) {
             List<Integer> idList = new ArrayList<>();
@@ -115,6 +116,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         int count = Math.toIntExact(projectDao.selectCount(new LambdaQueryWrapper<Project>()
                 .like(StringUtils.isNotBlank(condition.getKeywords()), Project::getName, condition.getKeywords())
                 .eq(Project::getIsDelete, CommonConst.FALSE)
+                .eq(Project::getUserId, condition.getUserInfoId())
                 .eq(Objects.nonNull(condition.getStatus()), Project::getStatus, condition.getStatus())));
         if (count == 0) {
             return new PageResult<>();
@@ -346,6 +348,32 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
             }
         }
         return analysisDTOS;
+    }
+
+    @Override
+    public PageResult<PostBackDTO> listPostBacks(ConditionVO condition) {
+        // Query the total number of posts
+        LambdaQueryWrapper<Post> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if (Objects.nonNull(condition.getProjectId())) {
+            lambdaQueryWrapper.eq(Post::getProjectId, condition.getProjectId());
+        }
+        if (Objects.nonNull(condition.getUserInfoId())) {
+            lambdaQueryWrapper.eq(Post::getUserId, condition.getUserInfoId());
+        }
+        int count = Math.toIntExact(postDao.selectCount(lambdaQueryWrapper.eq(Post::getIsDelete, 0)));
+        if (count == 0) {
+            return new PageResult<>();
+        }
+        // Query background posts
+        List<PostBackDTO> postBackDTOList = BeanCopyUtils.copyList(postDao.selectList(
+                lambdaQueryWrapper.eq(Post::getIsDelete, 0)), PostBackDTO.class);
+        postBackDTOList.forEach(postBackDTO -> {
+            postBackDTO.setInstructorId(
+                    projectDao.selectById(postBackDTO.getProjectId()).getUserId());
+            postBackDTO.setProjectName(
+                    projectDao.selectById(postBackDTO.getProjectId()).getName());
+        });
+        return new PageResult<>(postBackDTOList, count);
     }
 
     public List<QuestionPostDTO> getQuestionPostDTOS(Post post) {

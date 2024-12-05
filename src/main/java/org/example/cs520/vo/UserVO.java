@@ -33,4 +33,8 @@ public class UserVO {
     @NotBlank(message = "empty invitation code")
     @ApiModelProperty(name = "invitationCode", value = "invitation_code", required = true, dataType = "String")
     private String invitationCode;
+
+    @NotBlank(message = "role")
+    @ApiModelProperty(name = "role", value = "role", required = true, dataType = "String")
+    private String role;
 }

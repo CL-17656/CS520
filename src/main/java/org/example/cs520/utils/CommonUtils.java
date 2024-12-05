@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
  */
 public class CommonUtils {
     /**
-     * 检测邮箱是否合法
+     * check if email is valid
      *
-     * @param username 用户名
-     * @return 合法状态
+     * @param username username
+     * @return status
      */
     public static boolean checkEmail(String username) {
         String rule = "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$";
