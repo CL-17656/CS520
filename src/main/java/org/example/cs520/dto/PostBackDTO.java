@@ -1,12 +1,14 @@
-package org.example.cs520.entity;
+package org.example.cs520.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Xinyuan Xu
@@ -15,9 +17,10 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("tb_post")
-public class Post {
-    @TableId(value = "id", type = IdType.AUTO)
+public class PostBackDTO {
+    /**
+     * id
+     */
     private Integer id;
 
     /**
@@ -29,19 +32,17 @@ public class Post {
 
     private String answer;
 
-    private Integer isDelete;
+    private Integer instructorId;
+
+    private String projectName;
+
+    private Integer hasGraded;
 
     private String scores;
 
-    @TableField(fill = FieldFill.INSERT)
+    private Integer isDelete;
+
     private LocalDateTime createTime;
 
-    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
-
-    /**
-     * For comments on free response/manually graded questions
-     */
-    private String comments;
 }
-

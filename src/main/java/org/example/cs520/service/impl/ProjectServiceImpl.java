@@ -409,5 +409,49 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         }
         return questionPostDTOS;
     }
+
+    //update function specifically for manual grading
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public List<QuestionPostDTO> graderUpdateProjectPost(PostVO postVO){
+        Post post = postDao.selectOne(new LambdaQueryWrapper<Post>().eq(Post::getProjectId, postVO.getProjectId())
+                .eq(Post::getUserId, UserUtils.getLoginUser().getUserInfoId()).eq(Post::getIsDelete, false));
+        if (Objects.nonNull(post)) {
+            post.setIsDelete(1);
+            postService.saveOrUpdate(post);
+        }
+        postVO.setAnswer(StringEscapeUtils.escapeHtml4(postVO.getAnswer()));
+        postVO.setComments(StringEscapeUtils.escapeHtml4(postVO.getComments()));
+        post = BeanCopyUtils.copyObject(postVO, Post.class);
+        post.setUserId(UserUtils.getLoginUser().getUserInfoId());
+        postService.saveOrUpdate(post);
+        if (!projectDao.selectById(post.getProjectId()).getAnswerAnalysis()) {
+            return null;
+        }
+        post.setAnswer(StringEscapeUtils.unescapeHtml4(post.getAnswer()));
+        post.setComments(StringEscapeUtils.unescapeHtml4(postVO.getComments()));
+        post.setScores(StringEscapeUtils.unescapeHtml4(postVO.getScores()));
+        return getGraderQuestionPostDTOS(post, postVO.getUpdate_correctness());
+    }
+
+    public List<QuestionPostDTO> getGraderQuestionPostDTOS(Post post, Boolean[] update_correctness) {
+        List<QuestionPostDTO> questionPostDTOS = new ArrayList<>();
+        JSONObject jsonObject = JSONObject.parseObject(post.getAnswer());
+        //index for stepping through correctness array
+        int correctness_index = 0;
+        for (String s : jsonObject.keySet()) {
+            int questionId = Integer.parseInt(s);
+            QuestionPostDTO questionPostDTO = BeanCopyUtils.copyObject(questionDao.selectById(questionId), QuestionPostDTO.class);
+            // get answer
+            if (Objects.nonNull(answerDao.selectById(questionId))) {
+                AnswerDTO answerDTO = BeanCopyUtils.copyObject(answerDao.selectById(questionId), AnswerDTO.class);
+                answerDTO.setIsCorrect(update_correctness[correctness_index]);
+                // Convert my answer format
+                questionPostDTO.setAnswerDTO(answerDTO);
+            }
+            questionPostDTOS.add(questionPostDTO);
+        }
+        return questionPostDTOS;
+    }
 }
 

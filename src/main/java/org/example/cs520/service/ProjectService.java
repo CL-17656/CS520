@@ -1,15 +1,18 @@
 package org.example.cs520.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+
 import org.example.cs520.dto.ProjectBackDTO;
 import org.example.cs520.dto.ProjectDTO;
 import org.example.cs520.dto.QuestionBackAnalysisDTO;
 import org.example.cs520.dto.QuestionPostDTO;
 import org.example.cs520.entity.Project;
+import org.example.cs520.vo.ConditionVO;
 import org.example.cs520.vo.PageResult;
-import org.example.cs520.vo.*;
+import org.example.cs520.vo.PostVO;
+import org.example.cs520.vo.ProjectVO;
 
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * @author Xinyuan Xu
@@ -66,5 +69,12 @@ public interface ProjectService extends IService<Project> {
      * @return {@link QuestionBackAnalysisDTO} project info
      */
     List<QuestionBackAnalysisDTO> getProjectBackAnalysisById(Integer projectId);
+
+    /**
+     * Update answer/correctness (for graders/instructors, used for manual grading)
+     * @param postVO answer info
+     * @return {@link QuestionPostDTO} 
+     */
+    List<QuestionPostDTO> graderUpdateProjectPost(PostVO postVO);
 }
 

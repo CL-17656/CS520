@@ -118,5 +118,20 @@ public class ProjectController {
     public Result<List<QuestionBackAnalysisDTO>> getProjectBackAnalysisById(@PathVariable("projectId") Integer projectId) {
         return Result.ok(projectService.getProjectBackAnalysisById(projectId));
     }
+
+    /**
+     * Update answer/correctness (for graders/instructors, used for manual grading)
+     * 
+     * @param postVO answer info
+     * @param updated_correctness the new values of correctness for each question
+     * @param comments instructor comments on the response
+     * @return {@link Result <>} 
+     */
+    @OptLog(optType = SAVE_OR_UPDATE)
+    @ApiOperation(value = "Update answer/correctness (for graders/instructors, used for manual grading)")
+    @PostMapping("/project/gradeUpdate")
+    public Result<?> graderUpdateProjectPost(@Valid @RequestBody PostVO postVO) {
+        return Result.ok(projectService.graderUpdateProjectPost(postVO));
+    }
 }
 
