@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * @author Xinyuan Xu
+ * @author Xinyuan Xu, Katie Zhang
  */
 @Data
 @Builder
@@ -39,6 +39,8 @@ public class PostBackDTO {
     private Integer hasGraded;
 
     private String scores;
+
+    private String comments;
 
     private Integer isDelete;
 

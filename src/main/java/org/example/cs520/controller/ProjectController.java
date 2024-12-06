@@ -16,7 +16,7 @@ import java.util.List;
 import static org.example.cs520.constant.OptTypeConst.SAVE_OR_UPDATE;
 
 /**
- * @author Xinyuan Xu
+ * @author Xinyuan Xu, Katie Zhang
  */
 @Api(tags = "projects")
 @RestController

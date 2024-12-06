@@ -17,7 +17,7 @@ import org.example.cs520.vo.ProjectVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * @author Xinyuan Xu
+ * @author Xinyuan Xu, Katie Zhang
  */
 public interface ProjectService extends IService<Project> {
     /**

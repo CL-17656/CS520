@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * @author Xinyuan Xu
+ * @author Xinyuan Xu, Katie Zhang
  */
 @Data
 @Builder
@@ -34,8 +34,6 @@ public class Post {
     private String scores;
 
     private Integer isDelete;
-
-    private String scores;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

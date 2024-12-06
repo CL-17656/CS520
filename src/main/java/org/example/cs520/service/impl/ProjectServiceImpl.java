@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author Xinyuan Xu
+ * @author Xinyuan Xu, Katie Zhang
  */
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> implements ProjectService {
@@ -247,9 +247,27 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         postService.saveOrUpdate(post);
         if (!projectDao.selectById(post.getProjectId()).getAnswerAnalysis()) {
             return null;
+        } else {
+            post.setAnswer(StringEscapeUtils.unescapeHtml4(post.getAnswer()));
+            List<QuestionPostDTO> questionPostDTOList = getQuestionPostDTOS(post);
+            Post post1 = new Post();
+            post1.setId(post.getId());
+            post1.setHasGraded(1);
+            Map<String, Integer> map = new HashMap<>();
+            int total = 0;
+            for (QuestionPostDTO questionPostDTO : questionPostDTOList) {
+                if (questionPostDTO.getAnswerDTO().getIsCorrect()) {
+                    map.put(String.valueOf(questionPostDTO.getId()), 1);
+                    total++;
+                } else {
+                    map.put(String.valueOf(questionPostDTO.getId()), 0);
+                }
+            }
+            map.put("total", total);
+            post1.setScores(JSON.toJSONString(map));
+            postService.saveOrUpdate(post1);
+            return questionPostDTOList;
         }
-        post.setAnswer(StringEscapeUtils.unescapeHtml4(post.getAnswer()));
-        return getQuestionPostDTOS(post);
     }
 
     @Override
