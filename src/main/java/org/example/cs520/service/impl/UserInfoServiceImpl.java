@@ -42,7 +42,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfo> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateUserInfo(UserInfoVO userInfoVO) {
+    public UserInfo updateUserInfo(UserInfoVO userInfoVO) {
         // Encapsulate user information
         UserInfo userInfo = UserInfo.builder()
                 .id(UserUtils.getLoginUser().getUserInfoId())
@@ -51,6 +51,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfo> impl
                 .phone(userInfoVO.getPhone())
                 .build();
         userInfoDao.updateById(userInfo);
+        return userInfo;
     }
 
     @Transactional(rollbackFor = Exception.class)

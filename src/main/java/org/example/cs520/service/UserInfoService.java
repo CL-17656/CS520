@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.cs520.dto.UserOnlineDTO;
 import org.example.cs520.entity.UserInfo;
 import org.example.cs520.vo.*;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Xinyuan Xu
@@ -14,8 +13,9 @@ public interface UserInfoService extends IService<UserInfo> {
      * change user info
      *
      * @param userInfoVO userinfo
+     * @return
      */
-    void updateUserInfo(UserInfoVO userInfoVO);
+    UserInfo updateUserInfo(UserInfoVO userInfoVO);
 
     /**
      * updateUserRole
