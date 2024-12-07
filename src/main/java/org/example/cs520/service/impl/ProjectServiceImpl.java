@@ -57,13 +57,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveOrUpdateProject(ProjectVO projectVO) {
-        // Query whether the project name exists
-        Project project = projectDao.selectOne(new LambdaQueryWrapper<Project>()
-                .select(Project::getId).eq(Project::getName, projectVO.getName()));
-        if (Objects.nonNull(project) && Objects.isNull(projectVO.getId())) {
-            throw new BizException("Project name already exists");
-        }
-        project = BeanCopyUtils.copyObject(projectVO, Project.class);
+        Project project = BeanCopyUtils.copyObject(projectVO, Project.class);
         if (Objects.nonNull(projectVO.getPassword())) {
             project.setPassword(BCrypt.hashpw(project.getPassword(), BCrypt.gensalt()));
         }
