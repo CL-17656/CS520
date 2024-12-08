@@ -42,4 +42,7 @@ public class PostVO {
 
     @ApiModelProperty(name = "comments", value = "comments", dataType = "String")
     private String comments;
+
+    @ApiModelProperty(name = "studentId", value = "studentId", dataType = "Integer")
+    private Integer studentId;
 }

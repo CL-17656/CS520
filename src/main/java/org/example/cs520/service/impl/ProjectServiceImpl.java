@@ -476,7 +476,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
     @Override
     public List<QuestionPostDTO> graderUpdateProjectPost(PostVO postVO){
         Post post = postDao.selectOne(new LambdaQueryWrapper<Post>().eq(Post::getProjectId, postVO.getProjectId())
-                .eq(Post::getUserId, UserUtils.getLoginUser().getUserInfoId()).eq(Post::getIsDelete, false));
+                .eq(Post::getUserId, postVO.getStudentId()).eq(Post::getIsDelete, false));
         if (Objects.nonNull(post)) {
             post.setIsDelete(1);
             postService.saveOrUpdate(post);
