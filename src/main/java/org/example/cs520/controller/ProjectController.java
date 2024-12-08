@@ -116,6 +116,20 @@ public class ProjectController {
     }
 
     /**
+     * get project info by id
+     *
+     * @param projectId project id
+     * @return {@link Result} project info
+     */
+    @ApiOperation(value = "get project info by id")
+    @ApiImplicitParam(name = "projectId", value = "project id", required = true, dataType = "Integer")
+    @GetMapping("/project/{projectId}/history/{studentId}")
+    public Result<List<QuestionPostDTO>> getProjectHistoryByStuId(@PathVariable("projectId") Integer projectId,
+                                                                  @PathVariable("studentId") Integer studentId) {
+        return Result.ok(projectService.getProjectHistoryByStuId(projectId, studentId));
+    }
+
+    /**
      * get backend project info by id
      *
      * @param projectId project id

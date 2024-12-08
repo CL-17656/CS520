@@ -86,5 +86,7 @@ public interface ProjectService extends IService<Project> {
      * @return {@link Result<PostBackDTO>} backend post list
      */
     PageResult<PostBackDTO> listPostBacks(ConditionVO conditionVO);
+
+    List<QuestionPostDTO> getProjectHistoryByStuId(Integer projectId, Integer studentId);
 }
 

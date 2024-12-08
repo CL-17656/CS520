@@ -250,12 +250,19 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
             Map<String, Integer> map = new HashMap<>();
             int total = 0;
             for (QuestionPostDTO questionPostDTO : questionPostDTOList) {
+                if (questionPostDTO.getType() > 2) {
+                    total = -1;
+                    break;
+                }
                 if (questionPostDTO.getAnswerDTO().getIsCorrect()) {
                     map.put(String.valueOf(questionPostDTO.getId()), 1);
                     total++;
                 } else {
                     map.put(String.valueOf(questionPostDTO.getId()), 0);
                 }
+            }
+            if (total == -1) {
+                return questionPostDTOList;
             }
             map.put("total", total);
             post1.setScores(JSON.toJSONString(map));
@@ -268,6 +275,20 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
     public List<QuestionPostDTO> getProjectHistoryById(Integer projectId) {
         Post post = postDao.selectOne(new LambdaQueryWrapper<Post>().eq(Post::getProjectId, projectId)
                 .eq(Post::getUserId, UserUtils.getLoginUser().getUserInfoId()).eq(Post::getIsDelete, false));
+        if (Objects.isNull(post)) {
+            throw new BizException("Not answered");
+        }
+        if (!projectDao.selectById(projectId).getAnswerAnalysis()) {
+            return null;
+        }
+        post.setAnswer(StringEscapeUtils.unescapeHtml4(post.getAnswer()));
+        return getQuestionPostDTOS(post);
+    }
+
+    @Override
+    public List<QuestionPostDTO> getProjectHistoryByStuId(Integer projectId, Integer stuId) {
+        Post post = postDao.selectOne(new LambdaQueryWrapper<Post>().eq(Post::getProjectId, projectId)
+                .eq(Post::getUserId, stuId).eq(Post::getIsDelete, false));
         if (Objects.isNull(post)) {
             throw new BizException("Not answered");
         }

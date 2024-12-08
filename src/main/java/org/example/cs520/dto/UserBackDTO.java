@@ -40,5 +40,7 @@ public class UserBackDTO {
     private Date lastLoginTime;
 
     private Integer status;
+
+    private Integer isDisable;
 }
 
