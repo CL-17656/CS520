@@ -50,5 +50,10 @@ public class AnswerDTO {
      * isCorrect
      */
     private Boolean isCorrect;
+
+    /**
+     * comment
+     */
+    private String comment;
 }
 

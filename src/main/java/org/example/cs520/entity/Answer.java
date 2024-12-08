@@ -45,4 +45,6 @@ public class Answer {
 
     @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
+
+    private String comment;
 }
