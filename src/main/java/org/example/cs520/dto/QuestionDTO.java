@@ -31,5 +31,7 @@ public class QuestionDTO {
     private String possibleAnswers;
 
     private List<String> possibleAnswerList;
+
+    private String comments;
 }
 

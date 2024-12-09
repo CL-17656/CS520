@@ -45,7 +45,4 @@ public class AnswerVO {
 
     @ApiModelProperty(name = "correctAnswers", value = "correctAnswers", dataType = "String")
     private String correctAnswers;
-
-    @ApiModelProperty(name = "comment", value = "comment", dataType = "String")
-    private String comment;
 }
