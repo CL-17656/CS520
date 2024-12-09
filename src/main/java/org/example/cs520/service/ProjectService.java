@@ -77,7 +77,7 @@ public interface ProjectService extends IService<Project> {
      * @param postVO answer info
      * @return {@link QuestionPostDTO} 
      */
-    List<QuestionPostDTO> graderUpdateProjectPost(PostVO postVO);
+    void graderUpdateProjectPost(PostVO postVO);
 
     /**
      * get backend posts
