@@ -484,7 +484,6 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         postVO.setAnswer(StringEscapeUtils.escapeHtml4(postVO.getAnswer()));
         postVO.setComments(StringEscapeUtils.escapeHtml4(postVO.getComments()));
         post = BeanCopyUtils.copyObject(postVO, Post.class);
-        post.setUserId(UserUtils.getLoginUser().getUserInfoId());
         postService.saveOrUpdate(post);
         if (!projectDao.selectById(post.getProjectId()).getAnswerAnalysis()) {
             return null;
