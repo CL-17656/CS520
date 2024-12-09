@@ -1,6 +1,7 @@
 package org.example.cs520.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.example.cs520.dto.ProjectBackDTO;
 import org.example.cs520.dto.ProjectDTO;
@@ -88,5 +89,7 @@ public interface ProjectService extends IService<Project> {
     PageResult<PostBackDTO> listPostBacks(ConditionVO conditionVO);
 
     List<QuestionPostDTO> getProjectHistoryByStuId(Integer projectId, Integer studentId);
+
+    List<Map<String, Object>> getPieChartById(Integer projectId);
 }
 

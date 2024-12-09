@@ -27,7 +27,7 @@ public class QuestionPostDTO {
     private Integer status;
 
     /**
-     * 答案
+     * answer
      */
     private AnswerDTO answerDTO;
 

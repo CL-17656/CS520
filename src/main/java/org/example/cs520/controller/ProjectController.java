@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 import static org.example.cs520.constant.OptTypeConst.SAVE_OR_UPDATE;
 
@@ -154,6 +155,19 @@ public class ProjectController {
     public Result<?> graderUpdateProjectPost(@Valid @RequestBody PostVO postVO) {
         projectService.graderUpdateProjectPost(postVO);
         return Result.ok();
+    }
+
+    /**
+     * get pie chart by id
+     *
+     * @param projectId project id
+     * @return {@link Result} pie chart data
+     */
+    @ApiOperation(value = "get pie chart by id")
+    @ApiImplicitParam(name = "projectId", value = "project id", required = true, dataType = "Integer")
+    @GetMapping("/admin/project/{projectId}/pieChart")
+    public Result<List<Map<String, Object>>> getPieChartById(@PathVariable("projectId") Integer projectId) {
+        return Result.ok(projectService.getPieChartById(projectId));
     }
 }
 

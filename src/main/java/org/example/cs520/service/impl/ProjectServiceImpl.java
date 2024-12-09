@@ -6,6 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.gson.Gson;
 import org.apache.commons.text.StringEscapeUtils;
 import org.example.cs520.BizException;
 import org.example.cs520.constant.CommonConst;
@@ -297,6 +298,30 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         }
         post.setAnswer(StringEscapeUtils.unescapeHtml4(post.getAnswer()));
         return getQuestionPostDTOS(post);
+    }
+
+    @Override
+    public List<Map<String, Object>> getPieChartById(Integer projectId) {
+        ConditionVO conditionVO = new ConditionVO();
+        conditionVO.setProjectId(projectId);
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        List<PostBackDTO> posts = listPostBacks(conditionVO).getRecordList();
+        Map<Double, Integer> map = new HashMap<>();
+        for (PostBackDTO post : posts) {
+            double total = (double) new Gson().fromJson(post.getScores(),Map.class).get("total");
+            if (!map.containsKey(total)) {
+                map.put(total, 1);
+            } else {
+                map.put(total, map.get(total) + 1);
+            }
+        }
+        for (Double i : map.keySet()) {
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("name", i);
+            map1.put("value", map.get(i));
+            mapList.add(map1);
+        }
+        return mapList;
     }
 
     @Override
