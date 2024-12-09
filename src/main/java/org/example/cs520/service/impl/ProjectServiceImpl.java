@@ -491,15 +491,14 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         post.setAnswer(StringEscapeUtils.unescapeHtml4(post.getAnswer()));
         post.setComments(StringEscapeUtils.unescapeHtml4(postVO.getComments()));
         post.setScores(StringEscapeUtils.unescapeHtml4(postVO.getScores()));
-        return getGraderQuestionPostDTOS(post, post.getComments(), postVO.getUpdate_correctness());
+        return getGraderQuestionPostDTOS(post, postVO.getUpdate_correctness());
     }
 
-    public List<QuestionPostDTO> getGraderQuestionPostDTOS(Post post, String comments, Boolean[] update_correctness) {
+    public List<QuestionPostDTO> getGraderQuestionPostDTOS(Post post, Boolean[] update_correctness) {
         List<QuestionPostDTO> questionPostDTOS = new ArrayList<>();
         JSONObject jsonObject = JSONObject.parseObject(post.getAnswer());
         //index for stepping through correctness array
         int correctness_index = 0;
-        String[] ind_comments = comments.split(",");
         for (String s : jsonObject.keySet()) {
             int questionId = Integer.parseInt(s);
             QuestionPostDTO questionPostDTO = BeanCopyUtils.copyObject(questionDao.selectById(questionId), QuestionPostDTO.class);
@@ -507,7 +506,6 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
             if (Objects.nonNull(answerDao.selectById(questionId))) {
                 AnswerDTO answerDTO = BeanCopyUtils.copyObject(answerDao.selectById(questionId), AnswerDTO.class);
                 answerDTO.setIsCorrect(update_correctness[correctness_index]);
-                answerDTO.setComment(ind_comments[correctness_index]);
                 // Convert my answer format
                 questionPostDTO.setAnswerDTO(answerDTO);
             }
