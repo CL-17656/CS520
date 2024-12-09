@@ -30,5 +30,7 @@ public class QuestionPostDTO {
      * 答案
      */
     private AnswerDTO answerDTO;
+
+    private String comments;
 }
 
