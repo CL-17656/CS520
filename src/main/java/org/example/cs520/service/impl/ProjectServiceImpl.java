@@ -478,11 +478,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         Post post = postDao.selectOne(new LambdaQueryWrapper<Post>().eq(Post::getProjectId, postVO.getProjectId())
                 .eq(Post::getUserId, postVO.getStudentId()).eq(Post::getIsDelete, false));
         post.setComments(StringEscapeUtils.escapeHtml4(postVO.getComments()));
-        postService.saveOrUpdate(post);
-        if (!projectDao.selectById(post.getProjectId()).getAnswerAnalysis()) {
-            return null;
-        }
         post.setScores(StringEscapeUtils.unescapeHtml4(postVO.getScores()));
+        post.setHasGraded(1);
+        postService.saveOrUpdate(post);
         return getGraderQuestionPostDTOS(post, postVO.getUpdate_correctness());
     }
 
