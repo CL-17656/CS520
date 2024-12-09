@@ -477,19 +477,11 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
     public List<QuestionPostDTO> graderUpdateProjectPost(PostVO postVO){
         Post post = postDao.selectOne(new LambdaQueryWrapper<Post>().eq(Post::getProjectId, postVO.getProjectId())
                 .eq(Post::getUserId, postVO.getStudentId()).eq(Post::getIsDelete, false));
-        if (Objects.nonNull(post)) {
-            post.setIsDelete(1);
-            postService.saveOrUpdate(post);
-        }
-        postVO.setAnswer(StringEscapeUtils.escapeHtml4(postVO.getAnswer()));
-        postVO.setComments(StringEscapeUtils.escapeHtml4(postVO.getComments()));
-        post = BeanCopyUtils.copyObject(postVO, Post.class);
+        post.setComments(StringEscapeUtils.escapeHtml4(postVO.getComments()));
         postService.saveOrUpdate(post);
         if (!projectDao.selectById(post.getProjectId()).getAnswerAnalysis()) {
             return null;
         }
-        post.setAnswer(StringEscapeUtils.unescapeHtml4(post.getAnswer()));
-        post.setComments(StringEscapeUtils.unescapeHtml4(postVO.getComments()));
         post.setScores(StringEscapeUtils.unescapeHtml4(postVO.getScores()));
         return getGraderQuestionPostDTOS(post, postVO.getUpdate_correctness());
     }
