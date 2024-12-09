@@ -500,6 +500,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         JSONObject jsonObject = JSONObject.parseObject(post.getAnswer());
         //index for stepping through correctness array
         int correctness_index = 0;
+        String[] ind_comments = comments.split(",");
         for (String s : jsonObject.keySet()) {
             int questionId = Integer.parseInt(s);
             QuestionPostDTO questionPostDTO = BeanCopyUtils.copyObject(questionDao.selectById(questionId), QuestionPostDTO.class);
