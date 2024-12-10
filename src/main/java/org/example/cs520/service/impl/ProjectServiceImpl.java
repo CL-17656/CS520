@@ -475,7 +475,10 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         // Get answers to every question
         List<QuestionPostDTO> questionPostDTOS = new ArrayList<>();
         JSONObject jsonObject = JSONObject.parseObject(post.getAnswer());
-        JSONObject scores = JSONObject.parseObject(post.getScores());
+        JSONObject scores = null;
+        if (post.getScores() != null) {
+            scores = JSONObject.parseObject(post.getScores());
+        }
         for (String s : jsonObject.keySet()) {
             int questionId = Integer.parseInt(s);
             List<String> myAnswers = jsonObject.getJSONArray(s);
@@ -522,7 +525,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
                 }
                 // Determine whether it is correct
                 answerDTO.setIsCorrect(true);
-                if (Objects.equals(scores.get(questionId), 0)) {
+                if (Objects.nonNull(scores) && Objects.equals(scores.get(questionId), 0)) {
                     answerDTO.setIsCorrect(false);
                 }
                 // Convert my answer format
