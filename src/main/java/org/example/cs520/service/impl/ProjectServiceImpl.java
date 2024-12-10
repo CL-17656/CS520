@@ -475,10 +475,12 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
         // Get answers to every question
         List<QuestionPostDTO> questionPostDTOS = new ArrayList<>();
         JSONObject jsonObject = JSONObject.parseObject(post.getAnswer());
+        JSONObject scores = JSONObject.parseObject(post.getScores());
         for (String s : jsonObject.keySet()) {
             int questionId = Integer.parseInt(s);
             List<String> myAnswers = jsonObject.getJSONArray(s);
             QuestionPostDTO questionPostDTO = BeanCopyUtils.copyObject(questionDao.selectById(questionId), QuestionPostDTO.class);
+
             // get answer
             if (Objects.nonNull(answerDao.selectById(questionId))) {
                 AnswerDTO answerDTO = BeanCopyUtils.copyObject(answerDao.selectById(questionId), AnswerDTO.class);
@@ -520,8 +522,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
                 }
                 // Determine whether it is correct
                 answerDTO.setIsCorrect(true);
-                if (answerDTO.getCorrectAnswers() != null &&
-                        !new TreeSet<>(myAnswers).equals(new TreeSet<>(answerDTO.getCorrectAnswerList()))) {
+                if (Objects.equals(scores.get(questionId), 0)) {
                     answerDTO.setIsCorrect(false);
                 }
                 // Convert my answer format
