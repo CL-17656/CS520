@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
@@ -322,6 +323,42 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, Project> impleme
             mapList.add(map1);
         }
         return mapList;
+    }
+
+    @Override
+    public List<List<Object>> getLineChart() {
+        List<List<Object>> list = new ArrayList<>();
+        List<Integer> projectIds = new ArrayList<>();
+        List<Double> scores = new ArrayList<>();
+        ConditionVO conditionVO = new ConditionVO();
+        conditionVO.setUserInfoId(UserUtils.getLoginUser().getUserInfoId());
+        for (ProjectBackDTO projectBackDTO : listProjectBacks(conditionVO).getRecordList()) {
+            projectIds.add(projectBackDTO.getId());
+            if (postDao.selectCount(new LambdaQueryWrapper<Post>().eq(Post::getProjectId, projectBackDTO.getId())) == 0) {
+                scores.add(0.0);
+                continue;
+            }
+            ConditionVO conditionVO1 = new ConditionVO();
+            conditionVO1.setProjectId(projectBackDTO.getId());
+            double total = 0.0;
+            int count = 0;
+            for (PostBackDTO postBackDTO : listPostBacks(conditionVO1).getRecordList()) {
+                if (Objects.isNull(postBackDTO.getScores())) {
+                    continue;
+                }
+                total += (double) new Gson().fromJson(postBackDTO.getScores(),Map.class).get("total");
+                count++;
+            }
+            if (total == 0.0) {
+                scores.add(0.0);
+            } else {
+                double avg = total / count;
+                scores.add(avg);
+            }
+        }
+        list.add(Collections.singletonList(projectIds));
+        list.add(Collections.singletonList(scores));
+        return list;
     }
 
     @Override

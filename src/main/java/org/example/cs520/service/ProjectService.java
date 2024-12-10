@@ -91,5 +91,7 @@ public interface ProjectService extends IService<Project> {
     List<QuestionPostDTO> getProjectHistoryByStuId(Integer projectId, Integer studentId);
 
     List<Map<String, Object>> getPieChartById(Integer projectId);
+
+    List<List<Object>> getLineChart();
 }
 

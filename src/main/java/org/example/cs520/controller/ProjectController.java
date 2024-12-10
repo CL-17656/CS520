@@ -169,5 +169,16 @@ public class ProjectController {
     public Result<List<Map<String, Object>>> getPieChartById(@PathVariable("projectId") Integer projectId) {
         return Result.ok(projectService.getPieChartById(projectId));
     }
+
+    /**
+     * get avg score line chart
+     *
+     * @return {@link Result} line chart data
+     */
+    @ApiOperation(value = "get line chart for avg score")
+    @GetMapping("/admin/project/lineChart")
+    public Result<List<List<Object>>> getLineChart() {
+        return Result.ok(projectService.getLineChart());
+    }
 }
 
